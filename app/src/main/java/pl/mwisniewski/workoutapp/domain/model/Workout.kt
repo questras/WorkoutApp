@@ -1,6 +1,6 @@
 package pl.mwisniewski.workoutapp.domain.model
 
-typealias Seconds = Long
+typealias Seconds = Int
 
 data class Workout(
     val name: String,
