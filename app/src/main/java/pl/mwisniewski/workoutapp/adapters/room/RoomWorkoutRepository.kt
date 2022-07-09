@@ -1,29 +1,44 @@
 package pl.mwisniewski.workoutapp.adapters.room
 
-import pl.mwisniewski.workoutapp.adapters.room.dao.WorkoutExerciseLinkDao
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomExercise
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkout
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkoutExerciseLink
-import pl.mwisniewski.workoutapp.domain.model.Category
 import pl.mwisniewski.workoutapp.domain.model.Exercise
+import pl.mwisniewski.workoutapp.domain.model.ExerciseSet
 import pl.mwisniewski.workoutapp.domain.model.Workout
-import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
 import pl.mwisniewski.workoutapp.domain.port.WorkoutRepository
 
 class RoomWorkoutRepository(roomDatabase: AppRoomDatabase) : WorkoutRepository {
-    private val dao = roomDatabase.workoutDao()
+    private val workoutDao = roomDatabase.workoutDao()
     private val linkDao = roomDatabase.workoutExerciseLinkDao()
+    private val exerciseDao = roomDatabase.exerciseDao()
 
     override fun addWorkout(workout: Workout): Workout {
-        TODO("Not yet implemented")
+        val roomWorkout = workout.toRoom()
+        val links = workout.toLinks()
+
+        workoutDao.insert(roomWorkout)
+        linkDao.insertAll(links)
+
+        return workout
     }
 
     override fun deleteWorkout(workout: Workout) {
-        TODO("Not yet implemented")
+        val roomWorkout = workout.toRoom()
+
+        linkDao.deleteByWorkout(roomWorkout.name)
+        workoutDao.delete(roomWorkout)
     }
 
     override fun getAllWorkouts(): List<Workout> {
-        TODO("Not yet implemented")
+        val roomWorkouts = workoutDao.getAll()
+        val linksByWorkout = linkDao.getAll().groupBy(RoomWorkoutExerciseLink::workoutName)
+        val exercisesByName = exerciseDao.getAll()
+            .map(RoomExercise::toDomain)
+            .groupBy(Exercise::name)
+            .mapValues { entry -> entry.value.first() }
+
+        return roomWorkouts.map { it.toDomain(linksByWorkout[it.name]!!, exercisesByName) }
     }
 }
 
@@ -42,11 +57,15 @@ private fun Workout.toLinks(): List<RoomWorkoutExerciseLink> =
         )
     }
 
-private fun toDomain(roomWorkout: RoomWorkout,
-                     roomWorkoutExerciseLinks: List<RoomWorkoutExerciseLink>): Workout =
-    Workout(
-        roomWorkout.name, roomWorkout.description, roomWorkout.breakTime,
-        TODO()
-    )
+private fun RoomWorkout.toDomain(links: List<RoomWorkoutExerciseLink>,
+                                 exercisesByName: Map<String, Exercise>): Workout {
+    val exerciseSets = links.map { link ->
+        ExerciseSet.of(
+            exercisesByName[link.exerciseName]!!,
+            link.sets, link.minRepeats, link.maxRepeats
+        )
+    }
+    return Workout(this.name, this.description, this.breakTime, exerciseSets)
+}
 
 private const val INSERT_LINK_ID = 0

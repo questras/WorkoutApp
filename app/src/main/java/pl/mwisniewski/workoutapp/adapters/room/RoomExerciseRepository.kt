@@ -20,6 +20,3 @@ class RoomExerciseRepository(roomDatabase: AppRoomDatabase) : ExerciseRepository
 
 private fun Exercise.toRoom(): RoomExercise =
     RoomExercise(name, description, category.toString())
-
-private fun RoomExercise.toDomain(): Exercise =
-    Exercise(name, description, Category.valueOf(category))

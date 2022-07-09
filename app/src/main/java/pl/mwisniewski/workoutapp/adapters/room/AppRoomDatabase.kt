@@ -5,6 +5,9 @@ import androidx.room.RoomDatabase
 import pl.mwisniewski.workoutapp.adapters.room.dao.ExerciseDao
 import pl.mwisniewski.workoutapp.adapters.room.dao.WorkoutDao
 import pl.mwisniewski.workoutapp.adapters.room.dao.WorkoutExerciseLinkDao
+import pl.mwisniewski.workoutapp.adapters.room.model.RoomExercise
+import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkout
+import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkoutExerciseLink
 
 @Database(
     entities = [RoomExercise::class, RoomWorkout::class, RoomWorkoutExerciseLink::class],

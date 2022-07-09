@@ -1,7 +1,6 @@
 package pl.mwisniewski.workoutapp.adapters.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkoutExerciseLink
@@ -13,8 +12,8 @@ interface WorkoutExerciseLinkDao {
     fun getAll(): List<RoomWorkoutExerciseLink>
 
     @Insert
-    fun insert(link: RoomWorkoutExerciseLink)
+    fun insertAll(links: List<RoomWorkoutExerciseLink>)
 
-    @Delete
-    fun delete(link: RoomWorkoutExerciseLink)
+    @Query("DELETE FROM $WORKOUT_EXERCISE_LINK_TABLE_NAME WHERE workoutName=(:workoutName)")
+    fun deleteByWorkout(workoutName: String)
 }
