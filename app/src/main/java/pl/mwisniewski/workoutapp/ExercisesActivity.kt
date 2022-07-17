@@ -6,10 +6,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import pl.mwisniewski.workoutapp.databinding.ActivityExercisesBinding
 import pl.mwisniewski.workoutapp.ui.ExerciseViewModel
 
 class ExercisesActivity : AppCompatActivity() {
     private val exerciseViewModel: ExerciseViewModel by viewModels() // TODO: DI
+
+    private lateinit var binding: ActivityExercisesBinding // TODO: https://developer.android.com/topic/libraries/view-binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

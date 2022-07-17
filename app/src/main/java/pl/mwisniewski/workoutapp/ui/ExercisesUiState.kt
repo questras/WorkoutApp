@@ -1,8 +1,5 @@
 package pl.mwisniewski.workoutapp.ui
 
-import pl.mwisniewski.workoutapp.domain.model.Category
-import pl.mwisniewski.workoutapp.domain.model.Exercise
-
 
 data class ExercisesUiState(
     val exerciseItems: List<ExerciseItemUiState> = listOf(),

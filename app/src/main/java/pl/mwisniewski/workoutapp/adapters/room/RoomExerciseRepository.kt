@@ -5,6 +5,8 @@ import pl.mwisniewski.workoutapp.domain.model.Category
 import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
 
+// TODO: https://developer.android.com/guide/background
+// TODO: https://developer.android.com/training/data-storage/room/async-queries
 class RoomExerciseRepository(roomDatabase: AppRoomDatabase) : ExerciseRepository {
     private val dao = roomDatabase.exerciseDao()
 
