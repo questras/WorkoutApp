@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="pl.mwisniewski.workoutapp.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_exercisesFragment"
+            app:destination="@id/exercisesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_workoutsFragment"
+            app:destination="@id/workoutsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_currentWorkoutFragment"
+            app:destination="@id/currentWorkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exercisesFragment"
+        android:name="pl.mwisniewski.workoutapp.ExercisesFragment"
+        android:label="fragment_exercises"
+        tools:layout="@layout/fragment_exercises" >
+        <action
+            android:id="@+id/action_exercisesFragment_to_addExerciseActivity"
+            app:destination="@id/addExerciseActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutsFragment"
+        android:name="pl.mwisniewski.workoutapp.WorkoutsFragment"
+        android:label="fragment_workouts"
+        tools:layout="@layout/fragment_workouts" >
+        <action
+            android:id="@+id/action_workoutsFragment_to_addWorkoutActivity"
+            app:destination="@id/addWorkoutActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentWorkoutFragment"
+        android:name="pl.mwisniewski.workoutapp.CurrentWorkoutFragment"
+        android:label="fragment_current_workout"
+        tools:layout="@layout/fragment_current_workout" />
+    <activity
+        android:id="@+id/addExerciseActivity"
+        android:name="pl.mwisniewski.workoutapp.AddExerciseActivity"
+        android:label="activity_add_exercise"
+        tools:layout="@layout/activity_add_exercise" />
+    <activity
+        android:id="@+id/addWorkoutActivity"
+        android:name="pl.mwisniewski.workoutapp.AddWorkoutActivity"
+        android:label="activity_add_workout"
+        tools:layout="@layout/activity_add_workout" />
+</navigation>
