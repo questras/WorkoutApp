@@ -1,15 +1,16 @@
 package pl.mwisniewski.workoutapp.adapters.room
 
+import pl.mwisniewski.workoutapp.adapters.room.dao.ExerciseDao
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomExercise
-import pl.mwisniewski.workoutapp.domain.model.Category
 import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
+import javax.inject.Inject
 
 // TODO: https://developer.android.com/guide/background
 // TODO: https://developer.android.com/training/data-storage/room/async-queries
-class RoomExerciseRepository(roomDatabase: AppRoomDatabase) : ExerciseRepository {
-    private val dao = roomDatabase.exerciseDao()
-
+class RoomExerciseRepository @Inject constructor(
+    private val dao: ExerciseDao
+) : ExerciseRepository {
     override fun addExercise(exercise: Exercise): Exercise =
         dao.insert(exercise.toRoom()).let { exercise }
 

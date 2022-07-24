@@ -4,6 +4,7 @@
     package="pl.mwisniewski.workoutapp">
 
     <application
+        android:name=".di.BaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,19 +16,19 @@
         tools:targetApi="31">
         <activity
             android:name=".CurrentWorkoutActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".AddWorkoutActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".WorkoutsActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".AddExerciseActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ExercisesActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

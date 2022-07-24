@@ -2,6 +2,7 @@ package pl.mwisniewski.workoutapp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,8 +12,10 @@ import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
 import java.io.IOException
+import javax.inject.Inject
 
-class ExerciseViewModel(
+@HiltViewModel
+class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.com/topic/libraries/architecture/coroutines
     private val exerciseRepository: ExerciseRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ExercisesUiState())
