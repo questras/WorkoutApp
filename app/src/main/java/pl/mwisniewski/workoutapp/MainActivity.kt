@@ -1,6 +1,8 @@
 package pl.mwisniewski.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -33,5 +35,15 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun goToAddExerciseActivity(view: View) {
+        val intent = Intent(this, AddExerciseActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToAddWorkoutActivity(view: View) {
+        val intent = Intent(this, AddWorkoutActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -15,20 +15,23 @@
         android:theme="@style/Theme.WorkoutApp"
         tools:targetApi="31">
         <activity
-            android:name=".CurrentWorkoutActivity"
-            android:exported="true" />
-        <activity
             android:name=".AddWorkoutActivity"
-            android:exported="true" />
-        <activity
-            android:name=".WorkoutsActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/add_workout_action_bar_label"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".AddExerciseActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ExercisesActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/add_exercise_action_bar_label"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

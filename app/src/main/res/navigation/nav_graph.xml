@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="pl.mwisniewski.workoutapp.MainFragment"
-        android:label="fragment_main"
+        android:label="@string/main_action_bar_label"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_exercisesFragment"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/exercisesFragment"
         android:name="pl.mwisniewski.workoutapp.ExercisesFragment"
-        android:label="fragment_exercises"
+        android:label="@string/exercises_action_bar_label"
         tools:layout="@layout/fragment_exercises" >
         <action
             android:id="@+id/action_exercisesFragment_to_addExerciseActivity"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/workoutsFragment"
         android:name="pl.mwisniewski.workoutapp.WorkoutsFragment"
-        android:label="fragment_workouts"
+        android:label="@string/workouts_action_bar_label"
         tools:layout="@layout/fragment_workouts" >
         <action
             android:id="@+id/action_workoutsFragment_to_addWorkoutActivity"
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/currentWorkoutFragment"
         android:name="pl.mwisniewski.workoutapp.CurrentWorkoutFragment"
-        android:label="fragment_current_workout"
+        android:label="@string/current_workout_action_bar_label"
         tools:layout="@layout/fragment_current_workout" />
     <activity
         android:id="@+id/addExerciseActivity"

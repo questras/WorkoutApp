@@ -4,9 +4,11 @@
 
     <item
         android:id="@+id/exercisesFragment"
+        android:icon="@drawable/ic_baseline_bookmark_24"
         android:title="@string/exercises_menu_item" />
 
     <item
         android:id="@+id/workoutsFragment"
+        android:icon="@drawable/ic_baseline_bookmark_24"
         android:title="@string/workouts_menu_item" />
 </menu>
