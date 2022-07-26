@@ -12,6 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+
+const val SNACKBAR_MESSAGE = "pl.mwisniewski.workoutapp.SNACKBAR_MESSAGE"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -30,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
+
+        showSnackbarIfNeeded()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -45,5 +50,15 @@ class MainActivity : AppCompatActivity() {
     fun goToAddWorkoutActivity(view: View) {
         val intent = Intent(this, AddWorkoutActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showSnackbarIfNeeded() {
+        val snackbarMessage = intent.getStringExtra(SNACKBAR_MESSAGE)
+
+        snackbarMessage?.let {
+            Snackbar
+                .make(findViewById(android.R.id.content), snackbarMessage, Snackbar.LENGTH_SHORT)
+                .show()
+        }
     }
 }

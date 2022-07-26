@@ -11,7 +11,7 @@ import javax.inject.Inject
 class RoomExerciseRepository @Inject constructor(
     private val dao: ExerciseDao
 ) : ExerciseRepository {
-    override fun addExercise(exercise: Exercise): Exercise =
+    override suspend fun addExercise(exercise: Exercise): Exercise =
         dao.insert(exercise.toRoom()).let { exercise }
 
     override fun deleteExercise(exercise: Exercise) =

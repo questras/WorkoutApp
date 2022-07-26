@@ -11,4 +11,16 @@ enum class Category {
             ABS -> "abs"
             STRETCHING -> "stretching"
         }
+
+    companion object {
+        fun fromString(category: String): Category =
+            when (category) {
+                "upper body" -> UPPER_BODY
+                "lower body" -> LOWER_BODY
+                "cardio" -> CARDIO
+                "abs" -> ABS
+                "stretching" -> STRETCHING
+                else -> throw IllegalArgumentException(category)
+            }
+    }
 }
