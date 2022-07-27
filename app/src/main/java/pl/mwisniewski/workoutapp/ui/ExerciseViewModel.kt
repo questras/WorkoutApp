@@ -1,5 +1,6 @@
 package pl.mwisniewski.workoutapp.ui
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,7 +45,13 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
 
     fun addExercise(addExerciseRequest: AddExerciseRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            exerciseRepository.addExercise(addExerciseRequest.toDomain())
+            try {
+                exerciseRepository.addExercise(addExerciseRequest.toDomain())
+            }
+            catch (e: SQLiteConstraintException) {
+                // TODO: error handling if time
+                Unit
+            }
         }
     }
 

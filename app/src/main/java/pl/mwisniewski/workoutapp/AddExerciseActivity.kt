@@ -41,7 +41,6 @@ class AddExerciseActivity : AppCompatActivity() {
         if (name.isEmpty() or description.isEmpty() or category.isEmpty()) {
             emptyFieldsSnackbar().show()
         } else {
-            // TODO: what if exercise already exists?
             exerciseViewModel.addExercise(AddExerciseRequest(name, description, category))
             val intent = Intent(view.context, MainActivity::class.java).apply {
                 putExtra(SNACKBAR_MESSAGE, EXERCISE_CREATED_STRING)
