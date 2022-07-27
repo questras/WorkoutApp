@@ -43,7 +43,7 @@ class RoomWorkoutRepository(roomDatabase: AppRoomDatabase) : WorkoutRepository {
 }
 
 private fun Workout.toRoom(): RoomWorkout =
-    RoomWorkout(name, description, breakTime)
+    RoomWorkout(name, breakTime)
 
 private fun Workout.toLinks(): List<RoomWorkoutExerciseLink> =
     exercises.map { set ->
@@ -65,7 +65,7 @@ private fun RoomWorkout.toDomain(links: List<RoomWorkoutExerciseLink>,
             link.sets, link.minRepeats, link.maxRepeats
         )
     }
-    return Workout(this.name, this.description, this.breakTime, exerciseSets)
+    return Workout(this.name, this.breakTime, exerciseSets)
 }
 
 private const val INSERT_LINK_ID = 0

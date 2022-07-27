@@ -33,15 +33,14 @@ class AddExerciseActivity : AppCompatActivity() {
 
     fun addExerciseButtonClicked(view: View) {
         val name = findViewById<EditText>(R.id.add_exercise_name_edit).text.toString()
-        val description = findViewById<EditText>(R.id.add_exercise_description_edit).text.toString()
         val category = findViewById<Spinner>(R.id.add_exercise_category_spinner)
             .selectedItem
             .toString()
 
-        if (name.isEmpty() or description.isEmpty() or category.isEmpty()) {
+        if (name.isEmpty() or category.isEmpty()) {
             emptyFieldsSnackbar().show()
         } else {
-            exerciseViewModel.addExercise(AddExerciseRequest(name, description, category))
+            exerciseViewModel.addExercise(AddExerciseRequest(name, category))
             val intent = Intent(view.context, MainActivity::class.java).apply {
                 putExtra(SNACKBAR_MESSAGE, EXERCISE_CREATED_STRING)
             }

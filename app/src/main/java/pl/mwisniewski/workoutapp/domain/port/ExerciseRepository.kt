@@ -5,7 +5,7 @@ import pl.mwisniewski.workoutapp.domain.model.Exercise
 interface ExerciseRepository {
     suspend fun addExercise(exercise: Exercise): Exercise
 
-    fun deleteExercise(exercise: Exercise): Unit
+    suspend fun deleteExercise(exercise: Exercise): Unit
 
-    fun getAllExercises(): List<Exercise>
+    suspend fun getAllExercises(): List<Exercise>
 }

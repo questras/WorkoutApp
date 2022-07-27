@@ -14,12 +14,12 @@ class RoomExerciseRepository @Inject constructor(
     override suspend fun addExercise(exercise: Exercise): Exercise =
         dao.insert(exercise.toRoom()).let { exercise }
 
-    override fun deleteExercise(exercise: Exercise) =
+    override suspend fun deleteExercise(exercise: Exercise) =
         dao.delete(exercise.toRoom())
 
-    override fun getAllExercises(): List<Exercise> =
+    override suspend fun getAllExercises(): List<Exercise> =
         dao.getAll().map(RoomExercise::toDomain)
 }
 
 private fun Exercise.toRoom(): RoomExercise =
-    RoomExercise(name, description, category.toString())
+    RoomExercise(name, category.toString())

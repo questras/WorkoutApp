@@ -28,7 +28,7 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
 
     fun fetchExercises() {
         fetchJob?.cancel()
-        fetchJob = viewModelScope.launch {  // tODO: https://developer.android.com/kotlin/coroutines
+        fetchJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val exerciseItems = exerciseRepository.getAllExercises().map { it.toUiState() }
                 _uiState.update {
@@ -47,30 +47,35 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 exerciseRepository.addExercise(addExerciseRequest.toDomain())
-            }
-            catch (e: SQLiteConstraintException) {
+            } catch (e: SQLiteConstraintException) {
                 // TODO: error handling if time
                 Unit
             }
         }
     }
 
-//    fun deleteExercise(exercise: Exercise): Unit =
-//        workoutService
-//            .getAllWorkouts()
-//            .firstOrNull { workout ->
-//                workout.exercises.any { exerciseSet -> exerciseSet.exercise.name == exercise.name }
-//            }
-//            ?.let { workout -> throw CannotDeleteExerciseException(exercise, workout) }
-//            ?: exerciseRepository.deleteExercise(exercise)
+    private fun deleteExercise(exercise: Exercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            exerciseRepository.deleteExercise(exercise)
+            fetchExercises()
+            // TODO:
+            //            workoutService
+            //                .getAllWorkouts()
+            //                .firstOrNull { workout ->
+            //                    workout.exercises.any { exerciseSet -> exerciseSet.exercise.name == exercise.name }
+            //                }
+            //                ?.let { workout -> throw CannotDeleteExerciseException(exercise, workout) }
+            //                ?: exerciseRepository.deleteExercise(exercise)
+        }
+    }
 
-    fun userMessagesShown() {
+
+    fun userMessagesShown() { // TODO: maybe can be used to show errors like duplicate names.
         _uiState.update { it.copy(userMessages = listOf()) }
     }
 
     private fun Exercise.toUiState(): ExerciseItemUiState =
-        ExerciseItemUiState(name, description, category.toString(),
-            onDelete = { exerciseRepository.deleteExercise(this) })
+        ExerciseItemUiState(name, category.toString(), onDelete = { deleteExercise(this) })
 
     private fun getMessagesFromThrowable(exception: Throwable): List<Message> =
         listOf() // TODO: https://developer.android.com/topic/architecture/ui-layer#show-errors
@@ -78,9 +83,8 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
 
 data class AddExerciseRequest(
     val name: String,
-    val description: String,
     val category: String,
 ) {
     fun toDomain(): Exercise =
-        Exercise(name, description, Category.fromString(category))
+        Exercise(name, Category.fromString(category))
 }

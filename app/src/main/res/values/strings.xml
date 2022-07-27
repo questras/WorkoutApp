@@ -2,11 +2,10 @@
     <string name="add_exercise_action_bar_label">Add Exercise</string>
     <string name="add_exercise_name_label">Name</string>
     <string name="add_exercise_name_placeholder">Type a name…</string>
-    <string name="add_exercise_description_label">Description</string>
-    <string name="add_exercise_description_placeholder">Type a description…</string>
     <string name="add_exercise_category_label">Category</string>
     <string name="add_exercise_add_button_label">Add</string>
     <string name="fields_cannot_be_empty_message">Fields cannot be empty!</string>
+    <string name="delete_label">Delete</string>
 
     <string name="add_workout_action_bar_label">Add Workout</string>
     <string name="main_action_bar_label">Workout App</string>

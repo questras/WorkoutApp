@@ -13,9 +13,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
 const val SNACKBAR_MESSAGE = "pl.mwisniewski.workoutapp.SNACKBAR_MESSAGE"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
