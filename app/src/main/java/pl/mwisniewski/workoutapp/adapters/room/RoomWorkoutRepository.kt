@@ -1,5 +1,8 @@
 package pl.mwisniewski.workoutapp.adapters.room
 
+import pl.mwisniewski.workoutapp.adapters.room.dao.ExerciseDao
+import pl.mwisniewski.workoutapp.adapters.room.dao.WorkoutDao
+import pl.mwisniewski.workoutapp.adapters.room.dao.WorkoutExerciseLinkDao
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomExercise
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkout
 import pl.mwisniewski.workoutapp.adapters.room.model.RoomWorkoutExerciseLink
@@ -7,11 +10,13 @@ import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.model.ExerciseSet
 import pl.mwisniewski.workoutapp.domain.model.Workout
 import pl.mwisniewski.workoutapp.domain.port.WorkoutRepository
+import javax.inject.Inject
 
-class RoomWorkoutRepository(roomDatabase: AppRoomDatabase) : WorkoutRepository {
-    private val workoutDao = roomDatabase.workoutDao()
-    private val linkDao = roomDatabase.workoutExerciseLinkDao()
-    private val exerciseDao = roomDatabase.exerciseDao()
+class RoomWorkoutRepository @Inject constructor(
+    private val workoutDao: WorkoutDao,
+    private val linkDao: WorkoutExerciseLinkDao,
+    private val exerciseDao: ExerciseDao
+) : WorkoutRepository {
 
     override fun addWorkout(workout: Workout): Workout {
         val roomWorkout = workout.toRoom()
@@ -52,8 +57,7 @@ private fun Workout.toLinks(): List<RoomWorkoutExerciseLink> =
             set.exercise.name,
             this.name,
             set.sets,
-            set.minRepeats,
-            set.maxRepeats
+            set.repeats,
         )
     }
 
@@ -61,8 +65,7 @@ private fun RoomWorkout.toDomain(links: List<RoomWorkoutExerciseLink>,
                                  exercisesByName: Map<String, Exercise>): Workout {
     val exerciseSets = links.map { link ->
         ExerciseSet.of(
-            exercisesByName[link.exerciseName]!!,
-            link.sets, link.minRepeats, link.maxRepeats
+            exercisesByName[link.exerciseName]!!, link.sets, link.repeats
         )
     }
     return Workout(this.name, this.breakTime, exerciseSets)

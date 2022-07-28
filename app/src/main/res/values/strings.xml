@@ -4,6 +4,9 @@
     <string name="add_exercise_name_placeholder">Type a name…</string>
     <string name="add_exercise_category_label">Category</string>
     <string name="add_exercise_add_button_label">Add</string>
+    <string name="add_exercise_in_workout_exercise_label">Exercise</string>
+    <string name="add_exercise_in_workout_sets_label">Sets</string>
+    <string name="add_exercise_in_workout_repeats_label">Repeats</string>
     <string name="fields_cannot_be_empty_message">Fields cannot be empty!</string>
     <string name="delete_label">Delete</string>
 

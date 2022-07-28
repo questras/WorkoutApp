@@ -77,7 +77,7 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
     private fun Exercise.toUiState(): ExerciseItemUiState =
         ExerciseItemUiState(name, category.toString(), onDelete = { deleteExercise(this) })
 
-    private fun getMessagesFromThrowable(exception: Throwable): List<Message> =
+    private fun getMessagesFromThrowable(exception: Throwable): List<UserMessage> =
         listOf() // TODO: https://developer.android.com/topic/architecture/ui-layer#show-errors
 }
 

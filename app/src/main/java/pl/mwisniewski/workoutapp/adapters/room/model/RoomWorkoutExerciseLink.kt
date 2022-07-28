@@ -10,8 +10,7 @@ data class RoomWorkoutExerciseLink(
     val exerciseName: String,
     val workoutName: String,
     val sets: Int,
-    val minRepeats: Int,
-    val maxRepeats: Int,
+    val repeats: Int,
 )
 
 const val WORKOUT_EXERCISE_LINK_TABLE_NAME = "workout_exercise_link"

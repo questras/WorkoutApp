@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pl.mwisniewski.workoutapp.adapters.room.dao.ExerciseDao
 import javax.inject.Singleton
 
 @Module
@@ -24,4 +23,12 @@ object RoomDatabaseModule {
     @Singleton
     @Provides
     fun provideExerciseDao(db: AppRoomDatabase) = db.exerciseDao()
+
+    @Singleton
+    @Provides
+    fun provideWorkoutDao(db: AppRoomDatabase) = db.workoutDao()
+
+    @Singleton
+    @Provides
+    fun provideWorkoutExerciseLinkDao(db: AppRoomDatabase) = db.workoutExerciseLinkDao()
 }
