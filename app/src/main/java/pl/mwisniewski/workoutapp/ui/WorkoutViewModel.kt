@@ -9,12 +9,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.model.ExerciseSet
 import pl.mwisniewski.workoutapp.domain.model.Workout
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
 import pl.mwisniewski.workoutapp.domain.port.WorkoutRepository
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +30,35 @@ class WorkoutViewModel @Inject constructor(
     private var fetchJob: Job? = null
 
     fun fetchWorkouts() {
-        TODO()
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val workoutItems = workoutRepository.getAllWorkouts().map { it.toUiState() }
+                _uiState.update {
+                    it.copy(workoutItems = workoutItems)
+                }
+            } catch (ioe: IOException) {
+                val messages = getMessagesFromThrowable(ioe)
+                _uiState.update {
+                    it.copy(userMessages = messages)
+                }
+            }
+        }
+    }
+
+    private fun Workout.toUiState(): WorkoutItemUiState =
+        WorkoutItemUiState(
+            name, breakTime, exercises.map { it.toUiState() }, onDelete = { deleteWorkout(this) }
+        )
+
+    private fun ExerciseSet.toUiState(): ExerciseSetItemUiState =
+        ExerciseSetItemUiState(exercise.name, sets, repeats)
+
+    private fun deleteWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workoutRepository.deleteWorkout(workout)
+            fetchWorkouts()
+        }
     }
 
     fun addWorkout(addWorkoutRequest: AddWorkoutRequest) {
@@ -47,6 +77,9 @@ class WorkoutViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getMessagesFromThrowable(exception: Throwable): List<UserMessage> =
+        listOf() // TODO: https://developer.android.com/topic/architecture/ui-layer#show-errors
 }
 
 data class AddWorkoutRequest(

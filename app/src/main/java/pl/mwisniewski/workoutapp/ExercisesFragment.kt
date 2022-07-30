@@ -40,7 +40,8 @@ class ExercisesFragment : Fragment() {
 //                        // TODO: after message is displayed, notify view model
 //                        exerciseViewModel.userMessagesShown()
 //                    }
-                    exercisesAdapter.submitList(uiState.exerciseItems).also { println(uiState) }
+                    exercisesAdapter.submitList(uiState.exerciseItems)
+                        .also { println(uiState) } // TODO: remove print
                 }
             }
 
