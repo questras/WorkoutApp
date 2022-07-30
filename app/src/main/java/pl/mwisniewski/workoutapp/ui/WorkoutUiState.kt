@@ -14,7 +14,6 @@ data class WorkoutItemUiState(
 
 data class ExerciseSetItemUiState(
     val exerciseName: String,
-    val exerciseCategory: String,
     val sets: Int,
     val repeats: Int,
 )

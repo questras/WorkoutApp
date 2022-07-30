@@ -5,11 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddWorkoutActivity">
+    tools:context=".AddWorkoutActivity"
+    android:padding="15dp">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addWorkoutButtonClicked"
+        android:text="@string/add_button_label"/>
+
+    <TextView
+        android:id="@+id/add_workout_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/add_name_label" />
+
+    <EditText
+        android:id="@+id/add_workout_name_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/add_name_placeholder"
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/add_workout_break_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/add_workout_break_label" />
+
+    <EditText
+        android:id="@+id/add_workout_break_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="number"
+        android:minWidth="48dp"
+        android:minHeight="48dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addNextExerciseButtonClicked"
-        android:text="todo" />
+        android:text="@string/add_exercise_in_workout_button_label" />
 </androidx.appcompat.widget.LinearLayoutCompat>

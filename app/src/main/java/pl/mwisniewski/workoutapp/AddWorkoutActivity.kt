@@ -1,8 +1,10 @@
 package pl.mwisniewski.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,9 +13,7 @@ import androidx.lifecycle.coroutineScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import pl.mwisniewski.workoutapp.ui.ExerciseItemUiState
-import pl.mwisniewski.workoutapp.ui.ExerciseViewModel
-import pl.mwisniewski.workoutapp.ui.WorkoutViewModel
+import pl.mwisniewski.workoutapp.ui.*
 
 @AndroidEntryPoint
 class AddWorkoutActivity : AppCompatActivity() {
@@ -31,6 +31,53 @@ class AddWorkoutActivity : AppCompatActivity() {
                 exercisesToChoose = uiState.exerciseItems.map(ExerciseItemUiState::name)
             }
         }
+    }
+
+    fun addWorkoutButtonClicked(view: View) {
+        val name = findViewById<EditText>(R.id.add_workout_name_edit).text.toString()
+        val breakTime = findViewById<EditText>(R.id.add_workout_break_edit).text.toString()
+
+        if (name.isEmpty() or breakTime.isEmpty()) {
+            emptyFieldsSnackbar().show()
+            return
+        }
+
+        val exercises = mutableListOf<AddWorkoutExerciseSetRequest>()
+        var currentView: LinearLayoutCompat? = findViewById(R.id.add_exercise_item_in_workout)
+        while (currentView != null) {
+            exercises.add(mapViewToRequest(currentView))
+            currentView.id = currentView.id + 1
+
+            currentView = findViewById(R.id.add_exercise_item_in_workout)
+        }
+        println(exercises)
+
+        if (exercises.isEmpty()) {
+            emptyFieldsSnackbar().show()
+        } else {
+            workoutViewModel.addWorkout(AddWorkoutRequest(name, breakTime.toInt(), exercises))
+            val intent = Intent(view.context, MainActivity::class.java).apply {
+                putExtra(SNACKBAR_MESSAGE, WORKOUT_CREATED_STRING)
+            }
+            startActivity(intent)
+        }
+    }
+
+    private fun mapViewToRequest(view: LinearLayoutCompat): AddWorkoutExerciseSetRequest {
+        val name = view
+            .findViewById<Spinner>(R.id.add_exercise_in_workout_exercise_spinner)
+            .selectedItem
+            .toString()
+        val sets = view
+            .findViewById<EditText>(R.id.add_exercise_in_workout_sets_edit)
+            .text.toString()
+            .let { if (it.isEmpty()) SETS_DEFAULT else it.toInt() }
+        val repeats = view
+            .findViewById<EditText>(R.id.add_exercise_in_workout_repeats_edit)
+            .text.toString()
+            .let { if (it.isEmpty()) REPEATS_DEFAULT else it.toInt() }
+
+        return AddWorkoutExerciseSetRequest(name, sets, repeats)
     }
 
     fun addNextExerciseButtonClicked(view: View) {
@@ -75,13 +122,8 @@ class AddWorkoutActivity : AppCompatActivity() {
         )
 
     companion object {
-        private var currentId: Int = 42000 // TODO
+        private const val SETS_DEFAULT = 1
+        private const val REPEATS_DEFAULT = 8
         private const val WORKOUT_CREATED_STRING = "Workout created!"
     }
-
-    private data class IdHolder( // TODO
-        val spinnerId: Int,
-        val setsEditId: Int,
-        val repeatsEditId: Int
-    )
 }
