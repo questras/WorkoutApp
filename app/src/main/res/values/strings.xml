@@ -13,6 +13,8 @@
     <string name="delete_label">Delete</string>
     <string name="choose_workout_label">Choose a workout</string>
     <string name="start_workout_button_label">Start</string>
+    <string name="exercise_finished_button_label">Finished</string>
+    <string name="break_text">Break</string>
     <string name="add_workout_action_bar_label">Add Workout</string>
     <string name="main_action_bar_label">Workout App</string>
     <string name="exercises_action_bar_label">Exercises</string>

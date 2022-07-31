@@ -42,7 +42,11 @@
         android:id="@+id/currentWorkoutFragment"
         android:name="pl.mwisniewski.workoutapp.CurrentWorkoutFragment"
         android:label="@string/current_workout_action_bar_label"
-        tools:layout="@layout/fragment_current_workout" />
+        tools:layout="@layout/fragment_current_workout" >
+        <argument
+            android:name="workoutName"
+            app:argType="string" />
+    </fragment>
     <activity
         android:id="@+id/addExerciseActivity"
         android:name="pl.mwisniewski.workoutapp.AddExerciseActivity"

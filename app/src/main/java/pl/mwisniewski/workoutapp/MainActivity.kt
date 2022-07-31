@@ -3,7 +3,9 @@ package pl.mwisniewski.workoutapp
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 const val SNACKBAR_MESSAGE = "pl.mwisniewski.workoutapp.SNACKBAR_MESSAGE"
+const val WORKOUT_NAME_BUNDLE_ARGUMENT = "workoutName"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -55,8 +58,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun goToCurrentWorkoutFragment(view: View) {
-        val navController = findNavController(R.id.nav_host_fragment)
-        navController.navigate(R.id.currentWorkoutFragment)
+        val workoutName = findViewById<Spinner>(R.id.start_workout_spinner).selectedItem.toString()
+        if (workoutName.isNotEmpty()) {
+            val navController = findNavController(R.id.nav_host_fragment)
+            val bundle = bundleOf(WORKOUT_NAME_BUNDLE_ARGUMENT to workoutName)
+            navController.navigate(R.id.currentWorkoutFragment, bundle)
+        }
     }
 
     private fun showSnackbarIfNeeded() {
