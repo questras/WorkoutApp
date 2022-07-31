@@ -23,23 +23,24 @@ class CurrentWorkoutFragment : Fragment() {
     private val workoutViewModel: WorkoutViewModel by viewModels()
     private lateinit var exercisesQueue: Queue<ExerciseQueueItem>
     private var breakTimeSeconds: Int = 0
+    private lateinit var breakTimer: BreakCountDownTimer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_current_workout, container, false)
         val workoutName: String = requireArguments().getString(WORKOUT_NAME_BUNDLE_ARGUMENT)!!
-        println(workoutName)
 
         viewLifecycleOwner.lifecycleScope.launch {
             workoutViewModel.fetchWorkouts()
             workoutViewModel.uiState.collect { uiState ->
                 val workout: WorkoutItemUiState? = uiState
-                    .workoutItems.also { println(it) } // TODO: remove print
+                    .workoutItems
                     .firstOrNull { it.name == workoutName }
 
                 if (workout != null) {
                     breakTimeSeconds = workout.breakTime
+                    breakTimer = setupBreakTimer()
                     exercisesQueue = workout.toExercisesQueue()
                     setupNextExercise()
                 }
@@ -47,6 +48,11 @@ class CurrentWorkoutFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onDestroy() {
+        breakTimer.cancel()
+        super.onDestroy()
     }
 
     private fun WorkoutItemUiState.toExercisesQueue(): Queue<ExerciseQueueItem> =
@@ -81,11 +87,10 @@ class CurrentWorkoutFragment : Fragment() {
     private fun setupBreak() {
         getCurrentWorkoutViewSet()
             ?.let { viewSet ->
-                val timer = setupBreakTimer()
                 viewSet.breakTimerText.text = breakTimeSeconds.toString()
                 viewSet.setVisibility(isExerciseScreen = false)
 
-                timer.start()
+                breakTimer.start()
             }
     }
 
