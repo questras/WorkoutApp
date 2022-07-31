@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun goToCurrentWorkoutFragment(view: View) {
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(R.id.currentWorkoutFragment)
+    }
+
     private fun showSnackbarIfNeeded() {
         val snackbarMessage = intent.getStringExtra(SNACKBAR_MESSAGE)
 

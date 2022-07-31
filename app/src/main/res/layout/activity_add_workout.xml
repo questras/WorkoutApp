@@ -5,25 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddWorkoutActivity"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context=".AddWorkoutActivity">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="addWorkoutButtonClicked"
-        android:text="@string/add_button_label"/>
+        android:text="@string/add_button_label" />
 
     <TextView
         android:id="@+id/add_workout_name_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/add_name_label" />
+        android:text="@string/add_name_label"
+        android:textAlignment="center" />
 
     <EditText
         android:id="@+id/add_workout_name_edit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/add_name_placeholder"
@@ -32,14 +33,15 @@
 
     <TextView
         android:id="@+id/add_workout_break_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/add_workout_break_label" />
+        android:text="@string/add_workout_break_label"
+        android:textAlignment="center" />
 
     <EditText
         android:id="@+id/add_workout_break_edit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:inputType="number"
