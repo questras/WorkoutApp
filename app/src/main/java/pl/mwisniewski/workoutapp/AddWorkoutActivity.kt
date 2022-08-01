@@ -39,7 +39,10 @@ class AddWorkoutActivity : AppCompatActivity() {
         val breakTime = findViewById<EditText>(R.id.add_workout_break_edit).text.toString()
 
         if (name.isEmpty() or breakTime.isEmpty()) {
-            emptyFieldsSnackbar().show()
+            snackbar("Fields cannot be empty!").show()
+            return
+        } else if (name.length > MAX_NAME_LENGTH) {
+            snackbar("Name cannot be longer than ${MAX_NAME_LENGTH}!").show()
             return
         }
 
@@ -51,10 +54,9 @@ class AddWorkoutActivity : AppCompatActivity() {
 
             currentView = findViewById(R.id.add_exercise_item_in_workout)
         }
-        println(exercises)
 
         if (exercises.isEmpty()) {
-            emptyFieldsSnackbar().show()
+            snackbar("Add at least one exercise!").show()
         } else {
             workoutViewModel.addWorkout(AddWorkoutRequest(name, breakTime.toInt(), exercises))
             lifecycle.coroutineScope.launch(Dispatchers.IO) {
@@ -121,14 +123,15 @@ class AddWorkoutActivity : AppCompatActivity() {
         return this
     }
 
-    private fun emptyFieldsSnackbar(): Snackbar =
+    private fun snackbar(message: String): Snackbar =
         Snackbar.make(
             findViewById(android.R.id.content),
-            R.string.fields_cannot_be_empty_message,
-            Snackbar.LENGTH_SHORT
+            message,
+            Snackbar.LENGTH_LONG
         )
 
     companion object {
+        const val MAX_NAME_LENGTH = 20
         private const val SETS_DEFAULT = 1
         private const val REPEATS_DEFAULT = 8
     }

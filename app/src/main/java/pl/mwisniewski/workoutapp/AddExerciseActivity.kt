@@ -43,7 +43,9 @@ class AddExerciseActivity : AppCompatActivity() {
             .toString()
 
         if (name.isEmpty() or category.isEmpty()) {
-            emptyFieldsSnackbar().show()
+            snackbar("Fields cannot be empty!").show()
+        } else if (name.length > MAX_NAME_LENGTH) {
+            snackbar("Name cannot be longer than ${MAX_NAME_LENGTH}!").show()
         } else {
             exerciseViewModel.addExercise(AddExerciseRequest(name, category))
             lifecycle.coroutineScope.launch(Dispatchers.IO) {
@@ -59,10 +61,14 @@ class AddExerciseActivity : AppCompatActivity() {
         }
     }
 
-    private fun emptyFieldsSnackbar(): Snackbar =
+    private fun snackbar(message: String): Snackbar =
         Snackbar.make(
             findViewById(android.R.id.content),
-            R.string.fields_cannot_be_empty_message,
-            Snackbar.LENGTH_SHORT
+            message,
+            Snackbar.LENGTH_LONG
         )
+
+    companion object {
+        const val MAX_NAME_LENGTH = 20
+    }
 }
