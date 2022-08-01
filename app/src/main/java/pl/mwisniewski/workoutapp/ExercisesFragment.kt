@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.ui.ExerciseViewModel
@@ -34,19 +35,21 @@ class ExercisesFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 exerciseViewModel.fetchExercises()
                 exerciseViewModel.uiState.collect { uiState ->
-//                    uiState.userMessages.firstOrNull()?.let {
-//                        // TODO: Show snackbar with user message
-//
-//                        // TODO: after message is displayed, notify view model
-//                        exerciseViewModel.userMessagesShown()
-//                    }
+                    uiState.userMessage?.let {
+                        snackbar(it.message)
+                        exerciseViewModel.userMessagesShown()
+                    }
                     exercisesAdapter.submitList(uiState.exerciseItems)
-                        .also { println(uiState) } // TODO: remove print
                 }
             }
-
         }
 
         return view
+    }
+
+    private fun snackbar(message: String) {
+        Snackbar.make(
+            requireView(), message, Snackbar.LENGTH_LONG
+        ).show()
     }
 }

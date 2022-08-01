@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         snackbarMessage?.let {
             Snackbar
-                .make(findViewById(android.R.id.content), snackbarMessage, Snackbar.LENGTH_SHORT)
+                .make(findViewById(android.R.id.content), snackbarMessage, Snackbar.LENGTH_LONG)
                 .show()
         }
     }

@@ -12,6 +12,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.coroutineScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.ui.*
 
@@ -56,10 +57,16 @@ class AddWorkoutActivity : AppCompatActivity() {
             emptyFieldsSnackbar().show()
         } else {
             workoutViewModel.addWorkout(AddWorkoutRequest(name, breakTime.toInt(), exercises))
-            val intent = Intent(view.context, MainActivity::class.java).apply {
-                putExtra(SNACKBAR_MESSAGE, WORKOUT_CREATED_STRING)
+            lifecycle.coroutineScope.launch(Dispatchers.IO) {
+                workoutViewModel.uiState.collect { uiState ->
+                    val message = uiState.userMessage?.message
+                    val intent = Intent(view.context, MainActivity::class.java).apply {
+                        message?.let { putExtra(SNACKBAR_MESSAGE, it) }
+                    }
+                    workoutViewModel.userMessagesShown()
+                    startActivity(intent)
+                }
             }
-            startActivity(intent)
         }
     }
 
@@ -124,6 +131,5 @@ class AddWorkoutActivity : AppCompatActivity() {
     companion object {
         private const val SETS_DEFAULT = 1
         private const val REPEATS_DEFAULT = 8
-        private const val WORKOUT_CREATED_STRING = "Workout created!"
     }
 }

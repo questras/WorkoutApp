@@ -6,8 +6,6 @@ import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
 import javax.inject.Inject
 
-// TODO: https://developer.android.com/guide/background
-// TODO: https://developer.android.com/training/data-storage/room/async-queries
 class RoomExerciseRepository @Inject constructor(
     private val dao: ExerciseDao
 ) : ExerciseRepository {

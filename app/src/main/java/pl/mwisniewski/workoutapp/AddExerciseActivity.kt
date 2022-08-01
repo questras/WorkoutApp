@@ -8,8 +8,13 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.coroutineScope
+import androidx.navigation.findNavController
+import androidx.navigation.ui.navigateUp
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.domain.model.Category
 import pl.mwisniewski.workoutapp.ui.AddExerciseRequest
 import pl.mwisniewski.workoutapp.ui.ExerciseViewModel
@@ -41,10 +46,16 @@ class AddExerciseActivity : AppCompatActivity() {
             emptyFieldsSnackbar().show()
         } else {
             exerciseViewModel.addExercise(AddExerciseRequest(name, category))
-            val intent = Intent(view.context, MainActivity::class.java).apply {
-                putExtra(SNACKBAR_MESSAGE, EXERCISE_CREATED_STRING)
+            lifecycle.coroutineScope.launch(Dispatchers.IO) {
+                exerciseViewModel.uiState.collect { uiState ->
+                    val message = uiState.userMessage?.message
+                    val intent = Intent(view.context, MainActivity::class.java).apply {
+                        message?.let { putExtra(SNACKBAR_MESSAGE, it) }
+                    }
+                    exerciseViewModel.userMessagesShown()
+                    startActivity(intent)
+                }
             }
-            startActivity(intent)
         }
     }
 
@@ -54,8 +65,4 @@ class AddExerciseActivity : AppCompatActivity() {
             R.string.fields_cannot_be_empty_message,
             Snackbar.LENGTH_SHORT
         )
-
-    companion object {
-        private const val EXERCISE_CREATED_STRING = "Exercise created!"
-    }
 }

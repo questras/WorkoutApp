@@ -38,10 +38,8 @@ class WorkoutViewModel @Inject constructor(
                     it.copy(workoutItems = workoutItems)
                 }
             } catch (ioe: IOException) {
-                val messages = getMessagesFromThrowable(ioe)
-                _uiState.update {
-                    it.copy(userMessages = messages)
-                }
+                val message = UserMessage("Cannot read exercises")
+                _uiState.update { it.copy(userMessage = message) }
             }
         }
     }
@@ -72,14 +70,15 @@ class WorkoutViewModel @Inject constructor(
                     addWorkoutRequest.toDomain(exerciseByName)
                 )
             } catch (e: SQLiteConstraintException) {
-                // TODO: error handling if time
-                Unit
+                val message = UserMessage("Workout with such name already exists!")
+                _uiState.update { it.copy(userMessage = message) }
             }
         }
     }
 
-    private fun getMessagesFromThrowable(exception: Throwable): List<UserMessage> =
-        listOf() // TODO: https://developer.android.com/topic/architecture/ui-layer#show-errors
+    fun userMessagesShown() {
+        _uiState.update { it.copy(userMessage = null) }
+    }
 }
 
 data class AddWorkoutRequest(

@@ -14,12 +14,14 @@ import kotlinx.coroutines.launch
 import pl.mwisniewski.workoutapp.domain.model.Category
 import pl.mwisniewski.workoutapp.domain.model.Exercise
 import pl.mwisniewski.workoutapp.domain.port.ExerciseRepository
+import pl.mwisniewski.workoutapp.domain.port.WorkoutRepository
 import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.com/topic/libraries/architecture/coroutines
-    private val exerciseRepository: ExerciseRepository
+class ExerciseViewModel @Inject constructor(
+    private val exerciseRepository: ExerciseRepository,
+    private val workoutRepository: WorkoutRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ExercisesUiState())
     val uiState: StateFlow<ExercisesUiState> = _uiState.asStateFlow()
@@ -35,10 +37,8 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
                     it.copy(exerciseItems = exerciseItems)
                 }
             } catch (ioe: IOException) {
-                val messages = getMessagesFromThrowable(ioe)
-                _uiState.update {
-                    it.copy(userMessages = messages)
-                }
+                val message = UserMessage("Cannot read exercises")
+                _uiState.update { it.copy(userMessage = message) }
             }
         }
     }
@@ -47,38 +47,37 @@ class ExerciseViewModel @Inject constructor( // TODO: https://developer.android.
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 exerciseRepository.addExercise(addExerciseRequest.toDomain())
+                val message = UserMessage("Exercise created!")
+                _uiState.update { it.copy(userMessage = message) }
             } catch (e: SQLiteConstraintException) {
-                // TODO: error handling if time
-                Unit
+                val message = UserMessage("Exercise with such name already exists!")
+                _uiState.update { it.copy(userMessage = message) }
             }
         }
     }
 
     private fun deleteExercise(exercise: Exercise) {
         viewModelScope.launch(Dispatchers.IO) {
-            exerciseRepository.deleteExercise(exercise)
+            workoutRepository
+                .getAllWorkouts()
+                .firstOrNull { workout ->
+                    workout.exercises.any { exerciseSet -> exerciseSet.exercise.name == exercise.name }
+                }
+                ?.let {
+                    val message = UserMessage("Cannot delete exercise used by workout.")
+                    _uiState.update { it.copy(userMessage = message) }
+                }
+                ?: exerciseRepository.deleteExercise(exercise)
             fetchExercises()
-            // TODO:
-            //            workoutService
-            //                .getAllWorkouts()
-            //                .firstOrNull { workout ->
-            //                    workout.exercises.any { exerciseSet -> exerciseSet.exercise.name == exercise.name }
-            //                }
-            //                ?.let { workout -> throw CannotDeleteExerciseException(exercise, workout) }
-            //                ?: exerciseRepository.deleteExercise(exercise)
         }
-    }
-
-
-    fun userMessagesShown() { // TODO: maybe can be used to show errors like duplicate names.
-        _uiState.update { it.copy(userMessages = listOf()) }
     }
 
     private fun Exercise.toUiState(): ExerciseItemUiState =
         ExerciseItemUiState(name, category.toString(), onDelete = { deleteExercise(this) })
 
-    private fun getMessagesFromThrowable(exception: Throwable): List<UserMessage> =
-        listOf() // TODO: https://developer.android.com/topic/architecture/ui-layer#show-errors
+    fun userMessagesShown() {
+        _uiState.update { it.copy(userMessage = null) }
+    }
 }
 
 data class AddExerciseRequest(

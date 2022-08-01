@@ -3,7 +3,7 @@ package pl.mwisniewski.workoutapp.ui
 
 data class ExercisesUiState(
     val exerciseItems: List<ExerciseItemUiState> = listOf(),
-    val userMessages: List<UserMessage> = listOf()
+    val userMessage: UserMessage? = null
 )
 
 data class ExerciseItemUiState(
