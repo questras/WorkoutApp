@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -76,8 +77,8 @@ class CurrentWorkoutFragment : Fragment() {
         } else {
             getCurrentWorkoutViewSet()
                 ?.let { viewSet ->
-                    viewSet.exerciseDescription.text =
-                        "Do ${queueItem.repeats} repeats of ${queueItem.name}"
+                    viewSet.exerciseDescription.text = "Do ${queueItem.repeats} repeats of"
+                    viewSet.exerciseName.text = queueItem.name
                     viewSet.finishedButton.setOnClickListener { setupBreak() }
                     viewSet.setVisibility(isExerciseScreen = true)
                 }
@@ -103,10 +104,11 @@ class CurrentWorkoutFragment : Fragment() {
 
     private fun getCurrentWorkoutViewSet(): CurrentWorkoutViewSet? =
         view
-            ?.findViewById<LinearLayoutCompat>(R.id.current_workout_layout)
+            ?.findViewById<ConstraintLayout>(R.id.current_workout_layout)
             ?.let { layout ->
                 CurrentWorkoutViewSet(
                     layout.findViewById(R.id.current_exercise_description_text),
+                    layout.findViewById(R.id.current_exercise_exercise_name),
                     layout.findViewById(R.id.exercise_finished_button),
                     layout.findViewById(R.id.break_text),
                     layout.findViewById(R.id.break_timer_text)
@@ -127,6 +129,7 @@ class CurrentWorkoutFragment : Fragment() {
 
     private data class CurrentWorkoutViewSet(
         val exerciseDescription: TextView,
+        val exerciseName: TextView,
         val finishedButton: Button,
         val breakText: TextView,
         val breakTimerText: TextView
@@ -134,6 +137,7 @@ class CurrentWorkoutFragment : Fragment() {
         fun setVisibility(isExerciseScreen: Boolean) {
             if (isExerciseScreen) {
                 exerciseDescription.visibility = View.VISIBLE
+                exerciseName.visibility = View.VISIBLE
                 finishedButton.visibility = View.VISIBLE
                 breakText.visibility = View.GONE
                 breakTimerText.visibility = View.GONE
@@ -141,6 +145,7 @@ class CurrentWorkoutFragment : Fragment() {
                 breakText.visibility = View.VISIBLE
                 breakTimerText.visibility = View.VISIBLE
                 exerciseDescription.visibility = View.GONE
+                exerciseName.visibility = View.GONE
                 finishedButton.visibility = View.GONE
             }
         }
