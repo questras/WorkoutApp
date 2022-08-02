@@ -90,6 +90,10 @@ class CurrentWorkoutFragment : Fragment() {
             ?.let { viewSet ->
                 viewSet.breakTimerText.text = breakTimeSeconds.toString()
                 viewSet.setVisibility(isExerciseScreen = false)
+                viewSet.skipBreakButton.setOnClickListener {
+                    breakTimer.cancel()
+                    setupNextExercise()
+                }
 
                 breakTimer.start()
             }
@@ -111,7 +115,8 @@ class CurrentWorkoutFragment : Fragment() {
                     layout.findViewById(R.id.current_exercise_exercise_name),
                     layout.findViewById(R.id.exercise_finished_button),
                     layout.findViewById(R.id.break_text),
-                    layout.findViewById(R.id.break_timer_text)
+                    layout.findViewById(R.id.break_timer_text),
+                    layout.findViewById(R.id.skip_break_button)
                 )
             }
 
@@ -132,7 +137,8 @@ class CurrentWorkoutFragment : Fragment() {
         val exerciseName: TextView,
         val finishedButton: Button,
         val breakText: TextView,
-        val breakTimerText: TextView
+        val breakTimerText: TextView,
+        val skipBreakButton: Button,
     ) {
         fun setVisibility(isExerciseScreen: Boolean) {
             if (isExerciseScreen) {
@@ -141,9 +147,11 @@ class CurrentWorkoutFragment : Fragment() {
                 finishedButton.visibility = View.VISIBLE
                 breakText.visibility = View.GONE
                 breakTimerText.visibility = View.GONE
+                skipBreakButton.visibility = View.GONE
             } else {
                 breakText.visibility = View.VISIBLE
                 breakTimerText.visibility = View.VISIBLE
+                skipBreakButton.visibility = View.VISIBLE
                 exerciseDescription.visibility = View.GONE
                 exerciseName.visibility = View.GONE
                 finishedButton.visibility = View.GONE
