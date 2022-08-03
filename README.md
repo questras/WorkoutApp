@@ -2,22 +2,31 @@
 This is a mobile app for workouts. Created for university class: Languages and tools for programming II.
 
 A user can navigate to exercises and workouts:
-![drawer](/screenshots/drawer.png)
+
+<img src="/screenshots/drawer.png" width="300">
 
 ## Exercises
 A user can add an exercise and later see it in the list of exercises. An exercise can also be deleted.
-![exercise](/screenshots/exercises.png)
-![add_exercise](/screenshots/add_exercise.png)
+
+<img src="/screenshots/exercises.png" width="300">
+
+<img src="/screenshots/add_exercise.png" width="300">
 
 ## Workouts
 A user can add a workout (with existing exercises) and later see it in the list of workouts. A workout can also be deleted.
-![workout](/screenshots/workouts.png)
-![add_workout](/screenshots/add_workout.png)
+
+<img src="/screenshots/workouts.png" width="300">
+
+<img src="/screenshots/add_workout.png" width="300">
 
 ## Run a workout
 When having at least one workout, a user can start it. It goes through all exercises specified
 when creating the workout with breaks between them.
-![start_workout](/screenshots/start_workout.png)
-![current_workout_exercise](/screenshots/current_workout_exercise.png)
-![current_workout_break](/screenshots/current_workout_break.png)
-![finished_workout](/screenshots/finished_workout.png)
+
+<img src="/screenshots/start_workout.png" width="300">
+
+<img src="/screenshots/current_workout_exercise.png" width="300">
+
+<img src="/screenshots/current_workout_break.png" width="300">
+
+<img src="/screenshots/finished_workout.png" width="300">
