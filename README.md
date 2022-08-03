@@ -1,8 +1,6 @@
 # Workout App
 This is a mobile app for workouts. Created for university class: Languages and tools for programming II.
 
-A user can navigate to exercises and workouts:
-
 <img src="/screenshots/drawer.png" width="300">
 
 ## Exercises
